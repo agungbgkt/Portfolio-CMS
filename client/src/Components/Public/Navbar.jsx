@@ -12,7 +12,7 @@ export default function Navbar(){
     const [activeLink, setActiveLink] = useState("home"); // state menu aktif & update menu aktif
     useEffect(() => {
         const sections = document.querySelectorAll("section[id]"); // seleksi semua section berdasarkan id
-
+        // Browser mengawasi apakah section masuk ke viewport
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -30,7 +30,7 @@ export default function Navbar(){
         <nav className="bg-transparent w-full fixed top-0 left-0 z-999">
             <div className="md:flex items-center justify-between py-2 md:px-10 px-7">
                 {/* LEFT */}
-                <div className="font-bold text-2xl flex items-center font-[Poppins] text-black ml-10">
+                <div className="font-bold text-2xl flex items-center font-roboto-conceded text-black ml-10">
                     <h2>AUREN</h2>
                 </div>
             </div>
