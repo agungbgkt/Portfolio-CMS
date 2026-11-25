@@ -57,23 +57,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
-# Portofolio CMS
-A personal portfolio website with Content Management System (CMS) built using React, Laravel, PostgreSQL, Docker, and Nginx.
-
-## Tech Stack
-- React + Vite
-- Laravel
-- PostgreSQL
-- Docker
-- Nginx
-
-## Features
-- Portfolio Website
-- Admin Dashboard
-- Project Management
-- Experience
-- Skills
-- Certificates
-- Contact Form

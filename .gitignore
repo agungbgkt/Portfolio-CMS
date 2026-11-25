@@ -1,25 +1,23 @@
-# Dependencies
-node_modules/
-vendor/
-
-# Environment
+# Environment files
 .env
+server/.env
+client/.env
 
-# Build
-dist/
-build/
+# Dependencies
+server/vendor/
+client/node_modules/
+client/dist/
 
-# Logs
-*.log
+# Laravel storage & logs
+server/storage/*.key
+server/storage/logs/*.log
+server/public/storage
 
-# Laravel Storage
-storage/logs/
-storage/framework/
-
-# IDE
+# OS & Editor
+.DS_Store
+Thumbs.db
 .vscode/
 .idea/
 
-# OS
-.DS_Store
-Thumbs.db
+# Logs
+*.log

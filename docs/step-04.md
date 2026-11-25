@@ -1,0 +1,7 @@
+# SETUP INFRASTUKTUR (DOCKER, NGINX, POSTGRESQL) & INISIALISASI GIT
+1. Mengonfigurasi docker-compose.yml untuk menjalankan 5 container (nginx, server, client, postgres, pgadmin) dalam satu jaringan internal Docker (portfolio_network).
+2. Membuat custom Dockerfile PHP 8.3-FPM (ekstensi pdo_pgsql, gd, zip) beserta php.ini (upload_max_filesize = 10M), Dockerfile Node 22 Alpine untuk Vite (--host 0.0.0.0), dan persistent volume pgdata untuk PostgreSQL 16.
+3. Mengatur Nginx sebagai Reverse Proxy pada port 8080 untuk meneruskan / ke client (React), /api/* ke server (Laravel), dan /storage/* langsung ke file media.
+4. Menyamakan kredensial database antara .env root dan server/.env (DB_HOST=postgres), membuat .gitignore ketat untuk memblokir .env, vendor/, dan node_modules/, membersihkan .git bawaan subfolder, lalu melakukan git init dan initial commit.
+
+Tahap ini dilakukan agar lingkungan pengembangan di lokal identik dengan server production dan data PostgreSQL tidak hilang saat container dimatikan. Penggunaan Nginx sebagai pintu gerbang tunggal juga menghilangkan masalah CORS selama development, sementara .gitignore dan initial commit memastikan kredensial rahasia aman dari kebocoran ke GitHub.

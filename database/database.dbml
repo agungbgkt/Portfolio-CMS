@@ -1,0 +1,235 @@
+Project portofolio_CMS {
+    database_type: 'PostgreSQL'
+    note: 'Database Schema for Personal Portfolio & Custom CMS - Engineering Systems Beyond the Interface'
+}
+
+// 1. AUTH & PROFILE
+
+Table users {
+    id bigserial [pk],
+    name varchar(255) [not null],
+    email varchar(255) [unique, not null],
+    password varchar(255) [not null],
+    created_at timestamp [default: `now()`]
+    updated_at timestamp [default: `now()`]
+}
+
+Table profiles {
+    id bigserial [pk],
+    user_id bigint [unique, not null],
+    full_name varchar(255) [not null],
+    headline varchar(255) [not null, note: 'Default: Engineering Systems Beyond the Interface],
+    short_bio text [not null],
+    about_description text [not null],
+    avatar_url varchar(500),
+    resume_url varchar(500),
+    email_public varchar(255) [not null],
+    phone varchar(50),
+    location varchar(255),
+    social_links jsonb [note: 'Format JSON: {"github": "https://github.com/agungbgkt", "linkedin": "https://www.linkedin.com/in/agungbgkt", "instagram": "https://www.instagram.com/agungbgkt"}'],
+    years_of_experience smallint [default: 0],
+    updated_at timestamp [default: `now()`]
+}
+
+// 2. PORTFOLIO CONTENT (ABOUT & SKILLS)
+
+Table educations {
+    id bigserial [pk],
+    institution varchar(255) [not null],
+    degree varchar(255) [not null],
+    field_of_study varchar(255) [not null],
+    start_date date [not null],
+    end_date date,
+    description text,
+    sort_order int [default: 0],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`]
+}
+
+Table experiences {
+    id bigserial [pk],
+    title varchar(255) [not null],
+    organization varchar(255) [not null],
+    type varchar(50) [not null, note: 'work | internship | organization'],
+    location varchar(255),
+    start_date date [not null],
+    end_date date,
+    is_current boolean [default: false],
+    description text [not null],
+    sort_order int [default: 0],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`]
+}
+
+Table skill_categories {
+    id bigserial [pk],
+    name varchar(100) [unique, not null],
+    slug varchar(100) [unique, not null],
+    sort_order int [default: 0],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`]
+}
+
+Table skills {
+    id bigserial [pk],
+    skill_categories_id bigint [not null],
+    name varchar(255) [not null],
+    proficiency smallint [note: 'Range 1-100 (optional)'],
+    icon varchar(255),
+    sort_order int [default: 0],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`]
+}
+
+Table certifications {
+    id bigserial [pk],
+    nama varchar(255) [not null],
+    issuer varchar(255) [not null],
+    issue_date date [not null],
+    credential_url varchar(500),
+    file_url varchar(500),
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`]
+}
+
+Table services {
+    id bigserial [pk],
+    title varchar(255) [not null],
+    slug varchar(255) [unique, not null],
+    description text [not null],
+    icon varchar(255),
+    is_published boolean [default: true],
+    sort_order int [default: 0],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`]
+}
+
+// 3. PROJECTS & TECHNOLOGIES
+
+Table projects {
+    id bigserial [pk],
+    title varchar(255) [not null],
+    slug varchar(255) [unique, not null],
+    summary varchar(500) [not null],
+    description text [not null],
+    thumbnail_url varchar(500),
+    github_url varchar(500),
+    demo_url varchar(500),
+    is_featured boolean [default: false],
+    status varchar(20) [not null, default: 'draft', note: 'draft | published'],
+    views_count int [default: 0],
+    completed_at date
+    deleted_at timestamp [note: 'Soft delete'],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`],
+
+    indexes {
+        slug,
+        is_featured,
+        status
+    }
+}
+
+Table technologies {
+    id bigserial [pk],
+    name varchar(100) [unique, not null],
+    slug varchar(100) [unique, not null],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`]
+}
+
+Table project_technology {
+    project_id bigint [not null],
+    technology_id bigint [not null],
+
+    indexes {
+        (project_id, technology_id) [pk]
+    }
+}
+
+Table project_images {
+    id bigserial [pk],
+    project_id bigint [not null],
+    image_url varchar(500) [not null],
+    caption varchar(255),
+    sort_order int [default: 0],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`]
+}
+
+// 4. CMS OPERATIONS & ANALYTICS
+
+Table messages {
+    id bigserial [pk],
+    sender_name varchar(255) [not null],
+    sender_email varchar(255) [not null],
+    subject varchar(255) [not null],
+    body text [not null],
+    category varchar(50) [not null, default: 'primary', note: 'primary | general | social'],
+    is_read boolean [default: false],
+    deleted_at timestamp [note: 'Soft delete'],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`],
+
+    indexes {
+        category,
+        is_read
+    }
+}
+
+Table schedules {
+    id bigserial [pk],
+    title varchar(255) [not null],
+    description text,
+    scheduled_date date [not null],
+    start_time time,
+    end_time time,
+    is_completed boolean [default: false],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`]
+
+    indexes {
+        scheduled_date
+    }
+}
+
+Table media {
+    id bigserial [pk],
+    file_name varchar(255) [not null],
+    file_path varchar(500) [not null],
+    file_url varchar(500) [not null],
+    mime_type varchar(100) [not null],
+    file_size int [not null, note: 'In bytes'],
+    created_at timestamp [default: `now()`],
+    updated_at timestamp [default: `now()`]
+}
+
+Table page_views {
+    id bigserial [pk],
+    path varchar(255) [not null],
+    project_id bigint [note: 'Nullable: terisi jika halaman adalah detail project'],
+    ip_hash varchar(64) [not null, note: 'SHA-256 hash dari IP pengunjung demi privasi'],
+    user_agent varchar(500),
+    viewed_at timestamp [default: `now()`],
+
+    indexes {
+        path,
+        viewed_at
+    }
+}
+
+Table settings {
+    id bigserial [pk],
+    key varchar(180) [unique, not null],
+    value text,
+    updated_at timestamp [default: `now()`]
+}
+
+// RELATIONSHIPS (FOREIGN KEYS)
+
+Ref: profiles.user_id - users.id [delete: cascade],
+Ref: skills.skill_category_id > skill_categories.id [delete: cascade],
+Ref: project_technology.project_id > projects.id [delete: cascade],
+Ref: project_technology.technology_id > technologies.id [delete: cascade],
+Ref: project_images.project_id > projects.id [delete: cascade],
+Ref: page_views.project_id > projects.id [delete: set null]
