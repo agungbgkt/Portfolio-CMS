@@ -13,7 +13,6 @@ return new class extends Migration
             $table->foreignId('user_id')->unique()->constrained('users')->cascadeOnDelete();
             $table->string('full_name');
             $table->string('headline');
-            $table->string('headline');
             $table->text('short_bio');
             $table->text('about_description');
             $table->string('avatar_url', 500)->nullable();
