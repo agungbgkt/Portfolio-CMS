@@ -3,8 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Technology extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'slug',
+    ];
+    public function project(): BelongsToMany{
+        return $this->belongsToMany(Project::class, 'project_technology');
+    }
 }
